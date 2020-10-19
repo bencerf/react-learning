@@ -2,12 +2,16 @@
 
 # dependencies
 /node_modules
+/basics/node_modules
+/basics-assignment/node_modules
 
 # testing
-/coverage
+/basics/coverage
+/basics-assignment/coverage
 
 # production
-/build
+/basics/build
+/basics-assignment/build
 
 # misc
 .DS_Store
