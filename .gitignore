@@ -4,14 +4,17 @@
 /node_modules
 /basics/node_modules
 /basics-assignment/node_modules
+/lists-conditionals-assignment/node_modules
 
 # testing
 /basics/coverage
 /basics-assignment/coverage
+/lists-conditionals-assignment/coverage
 
 # production
 /basics/build
 /basics-assignment/build
+/lists-conditionals-assignment/build
 
 # misc
 .DS_Store
