@@ -17,7 +17,9 @@ Repository corresponding to the <i>React - The Complete Guide</i> course : https
   </tr>
   <tr>
     <td>lists-conditionals-assignment</td>
-    <td>Render component conditionally  + lists of components using .map and adding key</td>
+    <td>Render component conditionally  + lists of components with keys using:</br>
+      <i>.map() .slice(start[, deleteCount) .split('') .join('')</i>
+    </td>
   </tr>
   <tr>
     <td></td>
