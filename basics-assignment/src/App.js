@@ -37,7 +37,7 @@ const app = props => {
         <li>Add styling of your choice to your components/ elements in the components - both with inline styles and stylesheets</li>
       </ol>
 
-      <p><u><b>Results :</b></u></p>
+      <p><u><b>Results:</b></u></p>
       <br/>
 
       <UserInput
