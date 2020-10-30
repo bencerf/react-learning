@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+
+import Radium, { StyleRoot} from 'radium';
 // import logo from './logo.svg';
+
 import './App.css';
 
 import Person from './Person/Person';
@@ -12,7 +15,7 @@ const app = props => {
       { id: 'id3', name: 'Steph', age: '26' }
     ],
     otherState: 'some other value (erase if not copy by using useState hooks in functional component',
-    showPersons: true
+    showPersons: false
   });
 
   // const switchNameHandler = (newName) => {
@@ -74,11 +77,16 @@ const app = props => {
   };
 
   const style = {
-    backgroundColor: 'white',
+    backgroundColor: 'green',
+    color: 'white',
     font: 'inherit',
     border: '1px solid blue',
     padding: '8px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    ':hover': {
+      backgroundColor: 'lightgreen',
+      color: 'black'
+    }
   };
 
   // console.log(state)
@@ -117,40 +125,58 @@ const app = props => {
           age={state.persons[2].age} /> */}
       </div>
     );
+
+    style.backgroundColor = 'red';
+    style[':hover'] = {
+      backgroundColor: 'salmon',
+      color: 'black'
+    }
+  }
+
+  const classes = []; // "red bold"
+  if (state.persons.length <= 2)
+  {
+    classes.push('red'); // classes = ['red']
+  }
+  if (state.persons.length <= 1)
+  {
+    classes.push('bold') // classes = ['red', 'bold']
   }
 
   return (
-    <div className="App">
-      {/* <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p> */}
+    <StyleRoot>
+      <div className="App">
+        {/* <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>Welcome to React</h2>
+            </div>
+            <p className="App-intro">
+            To get started, edit <code>src/App.js</code> and save to reload.
+          </p> */}
 
-      <h1>Hi, I'm a React App</h1>
-      <p>Thi is really working!</p>
-      <button
-        style={style}
-        onClick={togglePersonsHandler}
-      >
-        Toggle Persons
-      </button>
+        <h1>Hi, I'm a React App</h1>
+        <p className={classes.join(' ')}>Thi is really working!</p>
+        <button
+          style={style}
+          onClick={togglePersonsHandler}
+          >
+          Toggle Persons
+        </button>
 
-      {/* <div v-if> */}
+        {/* <div v-if> */}
 
-      {/* // Rendering Content Conditionnaly (delete comments) */}
+        {/* // Rendering Content Conditionnaly (delete comments) */}
 
-      {/* {
-      state.showPersons === true ?
-      // React.createElement(<div></div>) behind */}
-      {persons}
-      {/* : null
-      } */}
-    </div>
+        {/* {
+          state.showPersons === true ?
+        // React.createElement(<div></div>) behind */}
+        {persons}
+        {/* : null
+        } */}
+      </div>
+    </StyleRoot>
   );
   // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App !!!'));
 };
 
-export default app;
+export default Radium(app);

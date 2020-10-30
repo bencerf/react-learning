@@ -2,6 +2,28 @@
   text-align: center;
 }
 
+.red {
+  color: red;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.button {
+  background-color: green;
+  color: white;
+  font: inherit;
+  border: 1ps solid blue;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: lightgreen;
+  color: black;
+}
+
 /* .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
