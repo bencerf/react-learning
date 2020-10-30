@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-
 import Radium, { StyleRoot} from 'radium';
 // import logo from './logo.svg';
 
 import './App.css';
-
+import classes from './App.module.css';
 import Person from './Person/Person';
 
 const app = props => {
@@ -76,22 +75,39 @@ const app = props => {
     // console.log(state);
   };
 
-  const style = {
-    backgroundColor: 'green',
-    color: 'white',
-    font: 'inherit',
-    border: '1px solid blue',
-    padding: '8px',
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: 'lightgreen',
-      color: 'black'
-    }
-  };
-
   // console.log(state)
 
+  /* Styling */
+
+  const assignedClasses = []; // "red bold"
+  if (state.persons.length <= 2)
+  {
+    assignedClasses.push(classes.red); // classes = ['red']
+  }
+  if (state.persons.length <= 1)
+  {
+    assignedClasses.push(classes.bold) // classes = ['red', 'bold']
+  }
+  
+  /* Person Component */
+  
   let persons = null;
+
+  // NB: Replace by btnClass below
+  // const style = {
+  //   backgroundColor: 'green',
+  //   color: 'white',
+  //   font: 'inherit',
+  //   border: '1px solid blue',
+  //   padding: '8px',
+  //   cursor: 'pointer',
+  //   ':hover': {
+  //     backgroundColor: 'lightgreen',
+  //     color: 'black'
+  //   }
+  // };
+
+  let btnClass = '';
 
   if (state.showPersons) {
     persons = (
@@ -126,26 +142,18 @@ const app = props => {
       </div>
     );
 
-    style.backgroundColor = 'red';
-    style[':hover'] = {
-      backgroundColor: 'salmon',
-      color: 'black'
-    }
-  }
+    // style.backgroundColor = 'red';
+    // style[':hover'] = {
+    //   backgroundColor: 'salmon',
+    //   color: 'black'
+    // }
 
-  const classes = []; // "red bold"
-  if (state.persons.length <= 2)
-  {
-    classes.push('red'); // classes = ['red']
-  }
-  if (state.persons.length <= 1)
-  {
-    classes.push('bold') // classes = ['red', 'bold']
+    btnClass = classes.Red;
   }
 
   return (
     <StyleRoot>
-      <div className="App">
+      <div className={classes.App}>
         {/* <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <h2>Welcome to React</h2>
@@ -155,9 +163,11 @@ const app = props => {
           </p> */}
 
         <h1>Hi, I'm a React App</h1>
-        <p className={classes.join(' ')}>Thi is really working!</p>
+        <p className={assignedClasses.join(' ')}>Thi is really working!</p>
         <button
-          style={style}
+          // style={style}
+          // className="button"
+          className={btnClass}
           onClick={togglePersonsHandler}
           >
           Toggle Persons
