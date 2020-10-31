@@ -163,7 +163,7 @@ const app = props => {
           </p> */}
 
         <h1>Hi, I'm a React App</h1>
-        <p className={assignedClasses.join(' ')}>Thi is really working!</p>
+        <p className={assignedClasses.join(' ')}>This is really working!</p>
         <button
           // style={style}
           // className="button"
