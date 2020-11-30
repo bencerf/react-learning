@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
-import Radium, { StyleRoot} from 'radium';
+import React, { useState } from "react";
+import Radium, { StyleRoot } from "radium";
 // import logo from './logo.svg';
 
-import './App.css';
-import classes from './App.module.css';
-import Person from './Person/Person';
+import "./App.css";
+import classes from "./App.module.css";
+import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/";
 
-const app = props => {
+const app = (props) => {
   const [state, setState] = useState({
     persons: [
-      { id: 'id1', name: 'Max', age: '28' },
-      { id: 'id2', name: 'Manu', age: '29' },
-      { id: 'id3', name: 'Steph', age: '26' }
+      { id: "id1", name: "Max", age: "28" },
+      { id: "id2", name: "Manu", age: "29" },
+      { id: "id3", name: "Steph", age: "26" },
     ],
-    otherState: 'some other value (erase if not copy by using useState hooks in functional component',
-    showPersons: false
+    otherState:
+      "some other value (erase if not copy by using useState hooks in functional component",
+    showPersons: false,
   });
 
   // const switchNameHandler = (newName) => {
@@ -30,25 +32,29 @@ const app = props => {
   //   });
   // };
 
-  const nameChangedHandler = ( event, id ) => {
-    const personIndex = state.persons.findIndex(p => {
+  const nameChangedHandler = (event, id) => {
+    const personIndex = state.persons.findIndex((p) => {
       return p.id === id;
+      // Error Debugging
+      // return p.userid === id;
     });
-    
+
     // !WRONG! const person = state.persons[personIndex]; // DO NOT mutable directly throught pointer
     const person = {
-      ...state.persons[personIndex]
+      ...state.persons[personIndex],
     };
     // const person = Object.assign({}, state.persons[personIndex]);
-    
+
     person.name = event.target.value;
+    //  Error Debugging
+    // person.name = event.input.value;
 
     const persons = [...state.persons]; // copy
     persons[personIndex] = person;
 
     setState({
       persons: persons,
-      showPersons: state.showPersons // copy
+      showPersons: state.showPersons, // copy
     });
   };
 
@@ -59,7 +65,7 @@ const app = props => {
     persons.splice(personIndex, 1);
     setState({
       persons: persons,
-      showPersons: state.showPersons
+      showPersons: state.showPersons,
     });
   };
 
@@ -69,7 +75,7 @@ const app = props => {
     const doesShow = state.showPersons;
     setState({
       persons: state.persons,
-      showPersons: !doesShow
+      showPersons: !doesShow,
     });
     // console.log("--- togglePersonsHandler - END");
     // console.log(state);
@@ -80,17 +86,15 @@ const app = props => {
   /* Styling */
 
   const assignedClasses = []; // "red bold"
-  if (state.persons.length <= 2)
-  {
+  if (state.persons.length <= 2) {
     assignedClasses.push(classes.red); // classes = ['red']
   }
-  if (state.persons.length <= 1)
-  {
-    assignedClasses.push(classes.bold) // classes = ['red', 'bold']
+  if (state.persons.length <= 1) {
+    assignedClasses.push(classes.bold); // classes = ['red', 'bold']
   }
-  
+
   /* Person Component */
-  
+
   let persons = null;
 
   // NB: Replace by btnClass below
@@ -107,23 +111,24 @@ const app = props => {
   //   }
   // };
 
-  let btnClass = '';
+  let btnClass = "";
 
   if (state.showPersons) {
     persons = (
       <div>
         {state.persons.map((person, index) => {
           return (
-            <Person
-              // Add a key in a list 
-              key={person.id}
-              name={person.name}
-              age={person.age}
-              click={() => deletePersonHandler(index)}
-              // click={deletePersonHandler.bind(this, index)}
-              changed={(event) => nameChangedHandler(event, person.id)}
-            />
-          )
+            <ErrorBoundary key={person.id}>
+              <Person
+                // Add a key in a list
+                name={person.name}
+                age={person.age}
+                click={() => deletePersonHandler(index)}
+                // click={deletePersonHandler.bind(this, index)}
+                changed={(event) => nameChangedHandler(event, person.id)}
+              />
+            </ErrorBoundary>
+          );
         })}
         {/* <Person
           name={state.persons[0].name}
@@ -163,13 +168,13 @@ const app = props => {
           </p> */}
 
         <h1>Hi, I'm a React App</h1>
-        <p className={assignedClasses.join(' ')}>This is really working!</p>
+        <p className={assignedClasses.join(" ")}>This is really working!</p>
         <button
           // style={style}
           // className="button"
           className={btnClass}
           onClick={togglePersonsHandler}
-          >
+        >
           Toggle Persons
         </button>
 
