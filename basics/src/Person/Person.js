@@ -4,12 +4,18 @@ import Radium from 'radium';
 import './Person.css';
 import classes from './Person.module.css';
 
-const person = (props) => {
+const person = props => {
   const style = {
     '@media (min-width: 500px)': {
       width: '450px'
     }
   }
+
+  // Trigger error randomly
+  // const rnd = Math.random();
+  // if ( rnd > 0.7) {
+  //   throw new Error( 'Something went wrong');
+  // }
 
   return (
     <div className={classes.Person} style={style}>
