@@ -9,7 +9,12 @@ Repository corresponding to the <i>React - The Complete Guide</i> course : https
   </tr>
   <tr>
     <td>basics</td>
-    <td>Basics, Lists & Conditionals, Styling Dynamically (inline, class, Radium, css modules inline/class, selector)</td>
+    <td>
+      Basics</br>
+      Lists & Conditionals</br>
+      Styling Dynamically (inline, class, Radium, css modules inline/class, selector)</br>
+      Debugging (ErrorBoundary)</br>
+    </td>
   </tr>
   <tr>
     <td>basics-assignment</td>
