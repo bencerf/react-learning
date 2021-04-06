@@ -8,6 +8,10 @@ Repository corresponding to the <i>React - The Complete Guide</i> course : https
     <td><b>Content</b></td>
   </tr>
   <tr>
+    <td>welcome</td>
+    <td>
+      Default Create-React-App for new incoming developers
+    </td>
     <td>basics</td>
     <td>
       Basics</br>
