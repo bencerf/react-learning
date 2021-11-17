@@ -1,5 +1,7 @@
-# React - The Complete Guide - Miryks Repository
-Repository corresponding to the <i>React - The Complete Guide</i> course : https://www.udemy.com/course/react-the-complete-guide-incl-redux/
+# React Learnin - Miryks Repository
+Repository corresponding to the following course :
+- <i>React - The Complete Guide</i>: https://www.udemy.com/course/react-the-complete-guide-incl-redux/
+- <i>Redux: The Single Immutable State Tree</i>: https://egghead.io/lessons/react-redux-the-single-immutable-state-tree
 
 <h1>Projects</h1>
 <table>
@@ -7,11 +9,15 @@ Repository corresponding to the <i>React - The Complete Guide</i> course : https
     <td><b>Folder</b></td>
     <td><b>Content</b></td>
   </tr>
+  
+  <th colspan="2">React - The Complete Guide></th>
   <tr>
     <td>welcome</td>
     <td>
       Default Create-React-App for new incoming developers
     </td>
+  </tr>
+  <tr>
     <td>basics</td>
     <td>
       Basics</br>
@@ -34,5 +40,10 @@ Repository corresponding to the <i>React - The Complete Guide</i> course : https
     <td></td>
     <td></td>
   </tr>
+  
+  <th colspan="2">Redux: The Single Immutable State Tree</th>
+  <tr>
+    <td>redux-from-scratch</td>
+    <td></td>
+  </tr>
 </table>
-
