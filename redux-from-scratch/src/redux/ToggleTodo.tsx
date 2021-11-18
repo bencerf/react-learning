@@ -1,21 +1,35 @@
 import { deepFreeze } from "./helpers";
 import { isEqual } from "lodash";
+import { combineReducers } from "redux";
 
 export interface Action {
   type: ActionType;
   id: number;
   text?: string;
+  filter?: Visibility;
 }
 
 export enum ActionType {
   "ADD_TODO",
   "TOGGLE_TODO",
+  "SET_VISIBILITY_FILTER",
+}
+
+export enum Visibility {
+  "SHOW_ALL" = "SHOW_ALL",
+  "SHOW_COMPLETED" = "SHOW_COMPLETED",
+  "SHOW_UNCOMPLETED" = "SHOW_UNCOMPLETED",
 }
 
 export interface Todo {
   id: number;
   text: string;
   completeStatus: boolean;
+}
+
+interface TodoApp {
+  todos: Todo[];
+  filter: Visibility;
 }
 
 // Reducer Composition
@@ -41,8 +55,20 @@ export const todoReducer = (stateElt: Todo, action: Action): Todo => {
   }
 };
 
-// Top tree reducer
-export const todoReducers = (state: Todo[], action: Action): Todo[] => {
+const visibilityFilterReducer = (
+  stateFilter: Visibility = Visibility.SHOW_ALL,
+  action: Action
+) => {
+  switch (action.type) {
+    case ActionType.SET_VISIBILITY_FILTER:
+      return action.filter;
+    default:
+      return stateFilter;
+  }
+};
+
+// Top tree reducer (be carefull to initialize state in props !)
+export const todoReducers = (state: Todo[] = [], action: Action): Todo[] => {
   switch (action.type) {
     case ActionType.ADD_TODO:
       return [...state, todoReducer(undefined, action)];
@@ -51,6 +77,38 @@ export const todoReducers = (state: Todo[], action: Action): Todo[] => {
     default:
       return state;
   }
+};
+
+// Reducer composition
+// Redux
+export const todoApp = combineReducers({
+  todos: todoReducers,
+  visibilityFilter: visibilityFilterReducer,
+});
+
+// Custom
+const customCombineReducers = (reducers: any) => {
+  return (state: any = {}, action: any) => {
+    return Object.keys(reducers).reduce((nextState: any, key: any) => {
+      nextState[key] = reducers[key](state[key], action);
+      return nextState;
+    }, {});
+  };
+};
+
+const combineTodoApp = customCombineReducers({
+  todos: todoReducers,
+  visibilityFilter: visibilityFilterReducer,
+});
+
+export const customTodoApp = (
+  stateApp: TodoApp = { todos: [], filter: undefined },
+  action: Action
+) => {
+  return {
+    todos: todoReducers(stateApp.todos, action),
+    visibilityFilter: visibilityFilterReducer(stateApp.filter, action),
+  };
 };
 
 // Tests Reducers

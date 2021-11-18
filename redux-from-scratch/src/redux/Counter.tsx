@@ -28,8 +28,8 @@ const testAddCounter = () => {
 
   deepFreeze(listBefore);
 
-  console.log(arrayEquals(addCounter(listBefore), listAfter));
   // expect(addCounter(listBefore)).toEqual(listAfter);
+  return arrayEquals(addCounter(listBefore), listAfter);
 };
 
 const testRemoveCounter = () => {
@@ -39,7 +39,7 @@ const testRemoveCounter = () => {
 
   deepFreeze(listBefore);
 
-  console.log(arrayEquals(removeCounter(listBefore, 1), listAfter));
+  return arrayEquals(removeCounter(listBefore, 1), listAfter);
 };
 
 const testIncrementCounter = () => {
@@ -49,13 +49,12 @@ const testIncrementCounter = () => {
 
   deepFreeze(listBefore);
 
-  console.log(arrayEquals(incrementCounter(listBefore, 1), listAfter));
+  return arrayEquals(incrementCounter(listBefore, 1), listAfter);
 };
 
-testAddCounter();
-testRemoveCounter();
-testIncrementCounter();
-console.log("All tests passed.");
+testAddCounter() && testRemoveCounter() && testIncrementCounter()
+  ? console.log("# All tests Counter passed !!")
+  : console.log("# Tests Counter failed !!");
 
 interface CounterProps {
   storeValue: any;

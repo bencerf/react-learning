@@ -1,5 +1,8 @@
+import { createStore } from "redux";
+import { todoApp, todoReducers } from "./ToggleTodo";
+
 // Reducers
-const counterReducer = (state = 0, action) => {
+const counterReducers = (state = 0, action) => {
   switch (action.type) {
     case 'INCREMENT':
       return state + 1;
@@ -10,8 +13,8 @@ const counterReducer = (state = 0, action) => {
   }
 };
 
-// Initialization
-const createStore = (reducer) => {
+// Custom store initialization
+const customCreateStore = (reducer) => {
   let state;
   let listeners = [];
 
@@ -34,6 +37,11 @@ const createStore = (reducer) => {
   return { getState, dispatch, subscribe };
 }
 
-const store = createStore(counterReducer);
+export const storeCounter = customCreateStore(counterReducers);
+console.log('Initial storeCounter state: ');
+console.log(storeCounter.getState());
 
-export default store;
+// export const storeTodo = createStore(todoReducers);
+export const storeTodo = customCreateStore(todoApp);
+console.log('Initial storeTodo state: ');
+console.log(storeTodo.getState());
