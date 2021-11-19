@@ -5,9 +5,9 @@ import App from "./App";
 import { storeCounter, storeTodo } from "./redux/store";
 import Counter from "./redux/Counter";
 import TodoApp, { Visibility } from "./redux/TodoApp";
-import { Todo } from "./redux/TodoApp";
 import { ActionType } from "./redux/TodoApp";
 import reportWebVitals from "./reportWebVitals";
+import { objectContaining } from "expect";
 
 const render = () => {
   ReactDOM.render(
@@ -18,11 +18,8 @@ const render = () => {
         onIncrement={() => storeCounter.dispatch({ type: "INCREMENT" })}
         onDecrement={() => storeCounter.dispatch({ type: "DECREMENT" })}
       />
-
       <hr></hr>
-
-      {/* <TodoApp todos={(storeTodo.getState() as Todo[]).todos} /> */}
-      {/* <TodoApp /> */}
+      <TodoApp {...storeTodo.getState()} />
     </React.StrictMode>,
     document.getElementById("root")
   );
