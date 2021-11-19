@@ -18,9 +18,9 @@ export enum ActionType {
 }
 
 export enum Visibility {
-  "SHOW_ALL" = "SHOW_ALL",
-  "SHOW_COMPLETED" = "SHOW_COMPLETED",
-  "SHOW_UNCOMPLETED" = "SHOW_UNCOMPLETED",
+  "SHOW_ALL" = "All",
+  "SHOW_COMPLETED" = "Completed",
+  "SHOW_UNCOMPLETED" = "Uncompleted",
 }
 
 export interface Todo {
@@ -196,29 +196,6 @@ testAddTodo() && testToggleTodo()
 //
 // Todo Component
 //
-interface FilterLinkProps {
-  filter: Visibility;
-  currentFilter: Visibility;
-  children: string;
-}
-const FilterLink = ({ filter, currentFilter, children }: FilterLinkProps) => {
-  const handleFilter = (event: any) => {
-    event.preventDefault();
-    storeTodo.dispatch({
-      type: ActionType.SET_VISIBILITY_FILTER,
-      filter,
-    });
-  };
-
-  return currentFilter === filter ? (
-    <span>{children}</span>
-  ) : (
-    // eslint-disable-next-line jsx-a11y/anchor-is-valid
-    <a href="#" onClick={handleFilter}>
-      {children}
-    </a>
-  );
-};
 
 // TodoElement
 interface TodoElementProps {
@@ -277,6 +254,59 @@ const TodoList = ({
   );
 };
 
+// FilterFooter
+interface FilterLinkProps {
+  filter: Visibility;
+  currentFilter: Visibility;
+  children: string;
+}
+const FilterLink = ({ filter, currentFilter, children }: FilterLinkProps) => {
+  const handleFilter = (event: any) => {
+    event.preventDefault();
+    storeTodo.dispatch({
+      type: ActionType.SET_VISIBILITY_FILTER,
+      filter,
+    });
+  };
+
+  return currentFilter === filter ? (
+    <span>{children}</span>
+  ) : (
+    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+    <a href="#" onClick={handleFilter}>
+      {children}
+    </a>
+  );
+};
+
+interface FilterFooterProps {
+  currentFilter: Visibility;
+}
+const FilterFooter = ({ currentFilter }: FilterFooterProps) => {
+  const visibilityValue = Object.values(Visibility);
+
+  return (
+    <div>
+      Show:{" "}
+      {Object.keys(Visibility).map((key, index) => {
+        console.log(currentFilter);
+        return (
+          <>
+            <FilterLink
+              filter={key as Visibility}
+              currentFilter={currentFilter}
+            >
+              {visibilityValue[index]}
+              {/* // Not Working */}
+              {/* {Visibility[key]} */}
+            </FilterLink>{" "}
+          </>
+        );
+      })}
+    </div>
+  );
+};
+
 // TodoApp
 const TodoApp = ({
   todos,
@@ -298,14 +328,16 @@ const TodoApp = ({
   };
 
   const handleAddTodo = () => {
-    inputRef.current.focus();
-    storeTodo.dispatch({
-      type: ActionType.ADD_TODO,
-      id: initialIndexTodo,
-      text: textValue,
-    });
-    setInitialIndexTodo(initialIndexTodo + 1);
-    setTextValue("");
+    if (textValue.length > 0) {
+      inputRef.current.focus();
+      storeTodo.dispatch({
+        type: ActionType.ADD_TODO,
+        id: initialIndexTodo,
+        text: textValue,
+      });
+      setInitialIndexTodo(initialIndexTodo + 1);
+      setTextValue("");
+    }
   };
 
   const handleToggleTodo = (index: number) => {
@@ -336,27 +368,24 @@ const TodoApp = ({
         visibilityFilter={visibilityFilter}
         onTodoElementClick={(id: number) => handleToggleTodo(id)}
       />
-      <div>
-        Show:{" "}
-        <FilterLink
-          filter={Visibility.SHOW_ALL}
-          currentFilter={visibilityFilter}
-        >
-          All
-        </FilterLink>{" "}
-        <FilterLink
-          filter={Visibility.SHOW_COMPLETED}
-          currentFilter={visibilityFilter}
-        >
-          Complete
-        </FilterLink>{" "}
-        <FilterLink
-          filter={Visibility.SHOW_UNCOMPLETED}
-          currentFilter={visibilityFilter}
-        >
-          Uncompleted
-        </FilterLink>{" "}
-      </div>
+      <FilterFooter currentFilter={visibilityFilter} />
+      {/* // <div>
+      // <FilterLink filter={Visibility.SHOW_ALL} currentFilter={visibilityFilter}>
+      //   All
+      // </FilterLink>{" "}
+      // <FilterLink
+      //   filter={Visibility.SHOW_COMPLETED}
+      //   currentFilter={visibilityFilter}
+      // >
+      //   Complete
+      // </FilterLink>{" "}
+      // <FilterLink
+      //   filter={Visibility.SHOW_UNCOMPLETED}
+      //   currentFilter={visibilityFilter}
+      // >
+      //   Uncompleted
+      // </FilterLink>{" "}
+      // </div> */}
     </div>
   );
 };
