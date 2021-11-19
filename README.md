@@ -37,13 +37,20 @@ Repository corresponding to the following course :
     </td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
+    <td>react-meals</td>
+    <td>
+      <a href="https://github.com/academind/react-complete-guide-code/tree/11-practice-food-order-app/extra-files">Video Overview</a></br>
+      <a href="https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25599450#overview">Extra-Files</a>
+    </td>
   </tr>
   
   <th colspan="2">Redux: The Single Immutable State Tree</th>
   <tr>
     <td>redux-from-scratch</td>
-    <td></td>
+    <td>
+      Custom <i>createStore()</i></br>
+      Reducers composition</br>
+      <i>dispatch()</i> applications (TodoApp with custom storeTodo)
+    </td>
   </tr>
 </table>
