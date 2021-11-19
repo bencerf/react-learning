@@ -82,7 +82,7 @@ export const todoReducers = (state: Todo[] = [], action: Action): Todo[] => {
 
 // Reducer composition
 // Redux
-export const todoApp = combineReducers({
+export const todoAppReducers = combineReducers({
   todos: todoReducers,
   visibilityFilter: visibilityFilterReducer,
 });
@@ -103,7 +103,7 @@ export const customCombineTodoApp = customCombineReducers({
 });
 
 // Combine Reducers details
-const customTodoApp = (
+export const customTodoApp = (
   stateApp: TodoAppType = { todos: [], filter: undefined },
   action: Action
 ) => {
@@ -112,6 +112,13 @@ const customTodoApp = (
     visibilityFilter: visibilityFilterReducer(stateApp.filter, action),
   };
 };
+
+// interface CombinedReducers {
+//   todos: (state: Todo[], action: Action) => Todo[];
+//   visibilityFilter: (stateFilter: Visibility, action: Action) => Visibility;
+// }
+
+export type CombinedState = Todo[] | Visibility;
 
 // Tests Reducers
 const testAddTodo = () => {
