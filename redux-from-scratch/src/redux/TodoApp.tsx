@@ -2,7 +2,13 @@ import { deepFreeze } from "./helpers";
 import { isEqual } from "lodash";
 import { combineReducers } from "redux";
 import { storeTodo } from "./store";
-import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import {
+  Component,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 export interface Action {
   type: ActionType;
@@ -196,29 +202,6 @@ testAddTodo() && testToggleTodo()
 //
 // Todo Component
 //
-interface FilterLinkProps {
-  filter: Visibility;
-  currentFilter: Visibility;
-  children: string;
-}
-const FilterLink = ({ filter, currentFilter, children }: FilterLinkProps) => {
-  const handleFilter = (event: any) => {
-    event.preventDefault();
-    storeTodo.dispatch({
-      type: ActionType.SET_VISIBILITY_FILTER,
-      filter,
-    });
-  };
-
-  return currentFilter === filter ? (
-    <span>{children}</span>
-  ) : (
-    // eslint-disable-next-line jsx-a11y/anchor-is-valid
-    <a href="#" onClick={handleFilter}>
-      {children}
-    </a>
-  );
-};
 
 // TodoElement
 interface TodoElementProps {
@@ -277,6 +260,71 @@ const TodoList = ({
   );
 };
 
+// Footer
+interface ShowLinkProps {
+  active: boolean;
+  children: string;
+  handleLinkClick: any;
+}
+const ShowLink = ({ active, children, handleLinkClick }: ShowLinkProps) => {
+  return active ? (
+    <span>{children}</span>
+  ) : (
+    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+    <a href="#" onClick={handleLinkClick}>
+      {children}
+    </a>
+  );
+};
+
+interface FilterLinkProps {
+  filter: Visibility;
+  children: string;
+}
+class FilterLink extends Component<FilterLinkProps> {
+  unsubscribe: CallableFunction;
+
+  componentDidMount() {
+    this.unsubscribe = storeTodo.subscribe(() => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  handleFilter = (event: any) => {
+    event.preventDefault();
+    storeTodo.dispatch({
+      type: ActionType.SET_VISIBILITY_FILTER,
+      filter: this.props.filter,
+    });
+  };
+
+  render() {
+    const props = this.props;
+    const state = storeTodo.getState();
+
+    return (
+      <ShowLink
+        active={props.filter === state.visibilityFilter}
+        handleLinkClick={this.handleFilter}
+      >
+        {props.children}
+      </ShowLink>
+    );
+  }
+}
+
+const FooterFilter = () => {
+  return (
+    <div>
+      Show: <FilterLink filter={Visibility.SHOW_ALL}>All</FilterLink>{" "}
+      <FilterLink filter={Visibility.SHOW_COMPLETED}>Complete</FilterLink>{" "}
+      <FilterLink filter={Visibility.SHOW_UNCOMPLETED}>Uncompleted</FilterLink>{" "}
+    </div>
+  );
+};
+
 // TodoApp
 const TodoApp = ({
   todos,
@@ -298,14 +346,16 @@ const TodoApp = ({
   };
 
   const handleAddTodo = () => {
-    inputRef.current.focus();
-    storeTodo.dispatch({
-      type: ActionType.ADD_TODO,
-      id: initialIndexTodo,
-      text: textValue,
-    });
-    setInitialIndexTodo(initialIndexTodo + 1);
-    setTextValue("");
+    if (textValue.length > 0) {
+      inputRef.current.focus();
+      storeTodo.dispatch({
+        type: ActionType.ADD_TODO,
+        id: initialIndexTodo,
+        text: textValue,
+      });
+      setInitialIndexTodo(initialIndexTodo + 1);
+      setTextValue("");
+    }
   };
 
   const handleToggleTodo = (index: number) => {
@@ -326,37 +376,12 @@ const TodoApp = ({
         onChange={handleTextInputChange}
       />
       <button onClick={handleAddTodo}>Add Todo</button>
-      {/* <ul>
-        {getVisibleTodos(todos, visibilityFilter)?.map((todo) => (
-          <Todo key={todo.id} onClick={() => handleToggleTodo(todo.id)} />
-        ))}
-      </ul> */}
       <TodoList
         todos={todos}
         visibilityFilter={visibilityFilter}
         onTodoElementClick={(id: number) => handleToggleTodo(id)}
       />
-      <div>
-        Show:{" "}
-        <FilterLink
-          filter={Visibility.SHOW_ALL}
-          currentFilter={visibilityFilter}
-        >
-          All
-        </FilterLink>{" "}
-        <FilterLink
-          filter={Visibility.SHOW_COMPLETED}
-          currentFilter={visibilityFilter}
-        >
-          Complete
-        </FilterLink>{" "}
-        <FilterLink
-          filter={Visibility.SHOW_UNCOMPLETED}
-          currentFilter={visibilityFilter}
-        >
-          Uncompleted
-        </FilterLink>{" "}
-      </div>
+      <FooterFilter />
     </div>
   );
 };
