@@ -1,10 +1,11 @@
 import { deepFreeze } from "./helpers";
 import { isEqual } from "lodash";
 import { combineReducers } from "redux";
+import { storeTodo } from "./store";
 
 export interface Action {
   type: ActionType;
-  id: number;
+  id?: number;
   text?: string;
   filter?: Visibility;
 }
@@ -27,7 +28,7 @@ export interface Todo {
   completeStatus: boolean;
 }
 
-interface TodoApp {
+interface TodoAppType {
   todos: Todo[];
   filter: Visibility;
 }
@@ -88,21 +89,22 @@ export const todoApp = combineReducers({
 
 // Custom
 const customCombineReducers = (reducers: any) => {
-  return (state: any = {}, action: any) => {
-    return Object.keys(reducers).reduce((nextState: any, key: any) => {
-      nextState[key] = reducers[key](state[key], action);
+  return (state = Object(), action: Action) => {
+    return Object.keys(reducers).reduce((nextState: any, index) => {
+      nextState[index] = reducers[index](state[index], action);
       return nextState;
     }, {});
   };
 };
 
-const combineTodoApp = customCombineReducers({
+export const customCombineTodoApp = customCombineReducers({
   todos: todoReducers,
   visibilityFilter: visibilityFilterReducer,
 });
 
-export const customTodoApp = (
-  stateApp: TodoApp = { todos: [], filter: undefined },
+// Combine Reducers details
+const customTodoApp = (
+  stateApp: TodoAppType = { todos: [], filter: undefined },
   action: Action
 ) => {
   return {
@@ -180,8 +182,28 @@ testAddTodo() && testToggleTodo()
   ? console.log("# All tests Todo passed !!")
   : console.log("# Tests Todo failed !!");
 
-const ToggleTodo = () => {
-  return <></>;
+let iTodo = 0;
+const TodoApp = (todos: Todo[]) => {
+  return (
+    <div>
+      <button
+        onClick={() => {
+          storeTodo.dispatch({
+            type: ActionType.ADD_TODO,
+            id: iTodo++,
+            text: "Test",
+          });
+        }}
+      >
+        Add Todo
+      </button>
+      <ul>
+        {todos.map((todo: any) => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
-export default ToggleTodo;
+export default TodoApp;

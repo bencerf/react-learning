@@ -1,5 +1,6 @@
 import { deepFreeze } from "./helpers";
 import { arrayEquals } from "./helpers";
+import { storeTodo } from "./store";
 
 const addCounter = (list: number[]) => {
   // Mutable array
@@ -70,6 +71,7 @@ const Counter = ({
   return (
     <div>
       <h1>{storeValue}</h1>
+      {console.log(storeValue)}
       <button onClick={onIncrement}>+</button>
       <button onClick={onDecrement}>-</button>
     </div>
